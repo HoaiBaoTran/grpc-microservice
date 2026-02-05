@@ -1,0 +1,56 @@
+syntax = "proto3";
+package user.v1;
+
+// UserService provides operations for managing users
+service UserService {
+  // Creates a new user
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  // Retrieves a user by name
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  // Deactivates an existing user
+  rpc DeactivateUser(DeactivateUserRequest) returns (DeactivateUserResponse);
+}
+
+// =====================
+// Domain messages
+// =====================
+message User {
+  string     name      = 1;
+  string     full_name = 2;
+  string     email     = 3;
+  UserStatus status    = 4;
+}
+
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;
+  ACTIVE                  = 1;
+  DEACTIVATED             = 2;
+}
+
+// =====================
+// Requests / Responses
+// =====================
+message CreateUserRequest {
+  string full_name = 1;
+  string email     = 2;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  string name = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message DeactivateUserRequest {
+  string name = 1;
+}
+
+message DeactivateUserResponse {
+  User user = 1;
+}

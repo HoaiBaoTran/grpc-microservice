@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "user-v2alpha"
+version = "2.0.0"
+requires-python = ">=3.11"
+dependencies = [
+  "protobuf>=4.25.0",
+  "grpcio>=1.60.0",
+]
+
+[project.optional-dependencies]
+dev = ["grpcio-tools>=1.60.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}

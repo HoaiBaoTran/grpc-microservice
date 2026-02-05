@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package user.v2;
+
+import "google/protobuf/timestamp.proto";
+
+// UserServiceV2 provides user management operations including creation, retrieval, and deactivation.
+service UserServiceV2 {
+  // CreateUser creates a new user with the provided email and display name.
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  // GetUser retrieves a user by their ID or email address.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  // DeactivateUser deactivates an existing user by their ID.
+  rpc DeactivateUser(DeactivateUserRequest) returns (DeactivateUserResponse);
+}
+
+// =====================
+// Domain messages
+// =====================
+message User {
+  string id    = 1;
+  string email = 2;
+
+  // BREAKING CHANGE:
+  // full_name -> display_name
+  string display_name = 3;
+
+  UserStatus status = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+
+  // Prevent reuse from v1
+  reserved 7;
+  reserved "full_name";
+}
+
+enum UserStatus {
+  USER_STATUS_UNSPECIFIED = 0;
+  ACTIVE                  = 1;
+  DEACTIVATED             = 2;
+}
+
+// =====================
+// Requests / Responses
+// =====================
+message CreateUserRequest {
+  string email        = 1;
+  string display_name = 2;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  oneof identifier {
+    string id    = 1;
+    string email = 2;
+  }
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message DeactivateUserRequest {
+  string id = 1;
+}
+
+message DeactivateUserResponse {
+  User user = 1;
+}
